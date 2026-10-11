@@ -3,16 +3,14 @@ const upload = document.getElementById('upload');
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const code = "const draw = (img) => { for (let y = 0; y < h; y++) { ctx.fillText(c, x, y); } }; ";
-const cols = 120;
+const colsSlider = document.getElementById('cols');
+const colsValue = document.getElementById('colsValue');
+let image = null;
 
 // file uploaing
-upload.addEventListener("change", async (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    // image upload
-    const image = await createImageBitmap(file);
-    console.log("Image-Size: ", image.width, "x", image.height);
+function draw() {
+    if (!image) return;
+    const cols = Number(colsSlider.value);
 
     // canvas size
     const rows = Math.round(cols * (image.height / image.width) * 0.5);
@@ -47,4 +45,18 @@ upload.addEventListener("change", async (event) => {
             i++;
         }
     }
+}
+
+upload.addEventListener("change", async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
+    image = await createImageBitmap(file);
+    draw();
+
 });
+
+colsSlider.addEventListener("input", () => {
+  colsValue.textContent = colsSlider.value;
+  draw();
+});
+
