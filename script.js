@@ -45,7 +45,11 @@ function getColor(r, g, b) {
   if (mode === "mono") {
     return `rgb(${light}, ${light}, ${light})`;
   }
+  if (mode === "syntax") {
+    return nearestSyntax(r, g, b);
+  }
   return `rgb(${r}, ${g}, ${b})`;
+  
 }
 
 function drawFrame(rows, charH, top) {
