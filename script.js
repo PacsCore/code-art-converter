@@ -15,10 +15,6 @@ upload.addEventListener("change", async (event) => {
     console.log("Image-Size: ", image.width, "x", image.height);
 
     // canvas size
-    canvas.width = image.width;
-    canvas.height = image.height;
-    ctx.drawImage(image, 0, 0);
-
     const rows = Math.round(cols * (image.height / image.width) * 0.5);
     const small = document.createElement("canvas");
     small.width = cols;
@@ -27,13 +23,15 @@ upload.addEventListener("change", async (event) => {
     sctx.drawImage(image, 0, 0, cols, rows);
     const pixels = sctx.getImageData(0, 0, cols, rows).data;
 
-    const charW = 8;
+    ctx.font = "bold 14px monospace";
+    const charW = ctx.measureText("M").width;
     const charH = 16;
+
     canvas.width = cols * charW;
     canvas.height = rows * charH;
-    ctx.fillstyle = "black";
+    ctx.fillStyle = "black";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.font = `bold 14px monospace`;
+    ctx.font = "bold 14px monospace";
     ctx.textBaseline = "top";
 
     let i = 0;
@@ -44,7 +42,7 @@ upload.addEventListener("change", async (event) => {
             const g = pixels[p + 1];
             const b = pixels[p + 2];
 
-            ctx.fillStyle = 'rgb(${r}, ${g}, ${b})';
+            ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
             ctx.fillText(code[i % code.length], x * charW, y * charH);
             i++;
         }
