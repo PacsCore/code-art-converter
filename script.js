@@ -1,10 +1,10 @@
 // Html elements
 const upload = document.getElementById('upload');
-const canvas = document.getElementById
+const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
 // file uploaing
-upload.addEventlistener("change", async (event) => {
+upload.addEventListener("change", async (event) => {
     const file = event.target.files[0];
     if (!file) return;
 
