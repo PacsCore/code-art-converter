@@ -36,5 +36,17 @@ upload.addEventListener("change", async (event) => {
     ctx.font = `bold 14px monospace`;
     ctx.textBaseline = "top";
 
-    
+    let i = 0;
+    for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < cols; x++) {
+            const p = (y * cols + x) * 4;
+            const r = pixels[p];
+            const g = pixels[p + 1];
+            const b = pixels[p + 2];
+
+            ctx.fillStyle = 'rgb(${r}, ${g}, ${b})';
+            ctx.fillText(code[i % code.length], x * charW, y * charH);
+            i++;
+        }
+    }
 });
