@@ -4,27 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Code Art Converter</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Code Art Converter</h1>
+  <header>
+    <h1>code art</h1>
+    <p>image → code</p>
+</header>
+
+  <div class="controls">
     <input type="file" id="upload" accept="image/*">
+
     <label>
-        Detail <span id="colsValue">120</span>
-        <input type="range" id="cols" min="40" max="300" value="120">
-        Colors:
-        <select id="mode">
-            <option value="original">Original</option>
-            <option value="matrix">Matrix</option>
-            <option value="mono">Black/White</option>
-        </select>
+      Detail: <span id="colsValue">120</span>
+      <input type="range" id="cols" min="40" max="300" value="120">
     </label>
+
     <label>
-        <input type="checkbox" id="ide">
-        IDE-Rahmen
+      Farben:
+      <select id="mode">
+        <option value="original">Original</option>
+        <option value="matrix">Matrix</option>
+        <option value="mono">Schwarz/Weiß</option>
+        <option value="syntax">Syntax</option>
+      </select>
     </label>
-    <button id="download" type="button">PNG herunterladen</button>
+
+    <label>
+      <input type="checkbox" id="ide"> IDE-Rahmen
+    </label>
+
+    <button id="download">PNG herunterladen</button>
+  </div>
+
+  <div class="output">
     <canvas id="canvas"></canvas>
-    <script src="script.js"></script>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>

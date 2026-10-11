@@ -10,6 +10,31 @@ const ideCheckbox = document.getElementById("ide");
 const downloadBtn = document.getElementById("download");
 let image = null;
 
+const SYNTAX = [
+  [224, 108, 117], // rot
+  [209, 154, 102], // orange
+  [229, 192, 123], // gelb
+  [215, 201, 167], // beige
+  [86, 182, 194],  // türkis
+  [229, 229, 229], // weiß
+  [92, 99, 112],   // grau
+  [45, 49, 57],    // dunkelgrau
+];
+
+function nearestSyntax(r, g, b) {
+  let best = SYNTAX[0];
+  let bestDist = Infinity;
+
+  for (const c of SYNTAX) {
+    const dist = (r - c[0]) ** 2 + (g - c[1]) ** 2 + (b - c[2]) ** 2;
+    if (dist < bestDist) {
+      bestDist = dist;
+      best = c;
+    }
+  }
+  return `rgb(${best[0]}, ${best[1]}, ${best[2]})`;
+}
+
 function getColor(r, g, b) {
   const mode = modeSelect.value;
   const light = (r + g + b) / 3;
