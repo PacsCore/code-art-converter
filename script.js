@@ -6,6 +6,8 @@ const code = "const draw = (img) => { for (let y = 0; y < h; y++) { ctx.fillText
 const colsSlider = document.getElementById('cols');
 const colsValue = document.getElementById('colsValue');
 const modeSelect = document.getElementById('mode');
+const ideCheckbox = document.getElementById("ide");
+const downloadBtn = document.getElementById("download");
 let image = null;
 
 function getColor(r, g, b) {
@@ -19,12 +21,38 @@ function getColor(r, g, b) {
     return `rgb(${light}, ${light}, ${light})`;
   }
   return `rgb(${r}, ${g}, ${b})`;
-
-  if (mode === "invert") {
-    return `rgb(${255 - r}, ${255 - g}, ${255 - b})`;
-  } 
 }
 
+function drawFrame(rows, charH, top) {
+    ctx.fillStyle = "#2d2d2d";
+    ctx.fillRect(0, 0, canvas.width, top);
+
+    const dots = [
+        { color: "#ff5f57", x: 16 },
+        { color: "#febc2e", x: 34 },
+        { color: "#28c840", x: 52 }
+    ];
+    for (const dot of dots) {
+        ctx.beginPath();
+        ctx.arc(dot.x, top / 2, 6, 0, Math.PI * 2);
+        ctx.fillStyle = dot.color;
+        ctx.fill();
+    }
+
+    ctx.font = "13px monospace";
+    ctx.textBaseline = "middle";
+    ctx.fillStyle = "#cccccc";
+    ctx.fillText("pacscore.js", 70, top / 2);
+
+    ctx.font = "14px monospace";
+    ctx.textBaseline = "top";
+    ctx.textAlign = "right";
+    ctx.fillStyle = "#555555";
+    for (let y = 0; y < rows; y++) {
+        ctx.fillText(String(y + 1).padStart(3), 42, top + y * charH);
+    }
+    ctx.textAlign = "left";
+}
 
 // file uploaing
 function draw() {
@@ -44,10 +72,17 @@ function draw() {
     const charW = ctx.measureText("M").width;
     const charH = 16;
 
-    canvas.width = cols * charW;
-    canvas.height = rows * charH;
-    ctx.fillStyle = "black";
+    const top = ideCheckbox.checked ? 40 : 0;
+    const left = ideCheckbox.checked ? 50 : 0;
+    canvas.width = left + cols * charW;
+    canvas.height = top + rows * charH;
+    ctx.fillStyle = "#1e1e1e";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    if (ideCheckbox.checked) {
+        drawFrame(rows, charH, top);
+    }
+
     ctx.font = "bold 14px monospace";
     ctx.textBaseline = "top";
 
@@ -60,7 +95,7 @@ function draw() {
             const b = pixels[p + 2];
 
             ctx.fillStyle = getColor(r, g, b);
-            ctx.fillText(code[i % code.length], x * charW, y * charH);
+            ctx.fillText(code[i % code.length], left + x * charW, top + y * charH);
             i++;
         }
     }
@@ -81,3 +116,16 @@ colsSlider.addEventListener("input", () => {
 
 modeSelect.addEventListener("change", draw);
 
+ideCheckbox.addEventListener("change", draw);
+
+downloadBtn.addEventListener("click", () => {
+    if (!image) {
+        alert("Lade zuerst ein Bild hoch!");
+        return;
+    }
+
+    const link = document.createElement("a");
+    link.download = "code-art.png";
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+});
