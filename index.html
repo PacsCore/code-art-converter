@@ -9,13 +9,17 @@
 <body>
     <h1>Code Art Converter</h1>
     <input type="file" id="upload" accept="image/*">
-    <canvas id="canvas"></canvas>
-
     <label>
-        Detail <span id="colorValue">120</span>
+        Detail <span id="colsValue">120</span>
         <input type="range" id="cols" min="40" max="300" value="120">
+        Colors:
+        <select id="mode">
+            <option value="original">Original</option>
+            <option value="matrix">Matrix</option>
+            <option value="mono">Black/White</option>
+        </select>
     </label>
-
+    <canvas id="canvas"></canvas>
     <script src="script.js"></script>
 </body>
 </html>

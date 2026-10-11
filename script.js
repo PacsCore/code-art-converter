@@ -5,7 +5,26 @@ const ctx = canvas.getContext('2d');
 const code = "const draw = (img) => { for (let y = 0; y < h; y++) { ctx.fillText(c, x, y); } }; ";
 const colsSlider = document.getElementById('cols');
 const colsValue = document.getElementById('colsValue');
+const modeSelect = document.getElementById('mode');
 let image = null;
+
+function getColor(r, g, b) {
+  const mode = modeSelect.value;
+  const light = (r + g + b) / 3;
+
+  if (mode === "matrix") {
+    return `rgb(0, ${light}, 0)`;
+  }
+  if (mode === "mono") {
+    return `rgb(${light}, ${light}, ${light})`;
+  }
+  return `rgb(${r}, ${g}, ${b})`;
+
+  if (mode === "invert") {
+    return `rgb(${255 - r}, ${255 - g}, ${255 - b})`;
+  } 
+}
+
 
 // file uploaing
 function draw() {
@@ -40,7 +59,7 @@ function draw() {
             const g = pixels[p + 1];
             const b = pixels[p + 2];
 
-            ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+            ctx.fillStyle = getColor(r, g, b);
             ctx.fillText(code[i % code.length], x * charW, y * charH);
             i++;
         }
@@ -59,4 +78,6 @@ colsSlider.addEventListener("input", () => {
   colsValue.textContent = colsSlider.value;
   draw();
 });
+
+modeSelect.addEventListener("change", draw);
 
