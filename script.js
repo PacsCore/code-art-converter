@@ -128,6 +128,7 @@ function draw() {
             i++;
         }
     }
+    canvas.toBlob((blob) => (lastBlob = blob), "image/png");
 }
 
 upload.addEventListener("change", async (event) => {
@@ -147,14 +148,32 @@ modeSelect.addEventListener("change", draw);
 
 ideCheckbox.addEventListener("change", draw);
 
-downloadBtn.addEventListener("click", () => {
-    if (!image) {
-        alert("Lade zuerst ein Bild hoch!");
-        return;
-    }
+    let lastBlob = null;
 
-    const link = document.createElement("a");
-    link.download = "code-art.png";
-    link.href = canvas.toDataURL("image/png");
-    link.click();
+    downloadBtn.addEventListener("click", async() => {
+      if (!lastBlob) {
+        alert("upload image first");
+        return;
+      }
+
+      const file = new File([lastBlob], "code-art.png", { type: "image/png" });
+      const isMobile = matchMedia("(pointer: coarse)").matches;
+
+      if (isMobile && navigator.canShare && navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({ files: [file] });
+        } catch (error) {
+
+        }
+        return;
+      }
+
+      const url = URL.createObjectURL(lastBlob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = "code-art.png";
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      URL.revokeObjectURL(url);
 });
