@@ -191,3 +191,5 @@ ideCheckbox.addEventListener("change", draw);
       link.remove();
       URL.revokeObjectURL(url);
 });
+
+charsSelect.addEventListener("change", draw);
