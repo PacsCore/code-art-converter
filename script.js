@@ -8,6 +8,8 @@ const colsValue = document.getElementById('colsValue');
 const modeSelect = document.getElementById('mode');
 const ideCheckbox = document.getElementById("ide");
 const downloadBtn = document.getElementById("download");
+const charsSelect = document.getElementById("chars");
+const RAMP = " .'`^\",:;Il!i><~+_-?][}{1)(|/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$";
 let image = null;
 
 const SYNTAX = [
@@ -124,7 +126,19 @@ function draw() {
             const b = pixels[p + 2];
 
             ctx.fillStyle = getColor(r, g, b);
-            ctx.fillText(code[i % code.length], left + x * charW, top + y * charH);
+            const light = (r + g + b) / 3;
+            let char;
+
+            if (charsSelect.value === "ascii") {
+                const Index = Math.floor((light / 255) * (RAMP.length - 1));
+                char = RAMP[Index];
+            } else {
+                char = code[i % code.length];
+            }
+
+            if (char === " ") {
+                ctx.fillText(char, left + x * charW, top + y * charH);
+            }
             i++;
         }
     }
