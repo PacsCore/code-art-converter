@@ -136,7 +136,7 @@ function draw() {
                 char = code[i % code.length];
             }
 
-            if (char === " ") {
+            if (char !== " ") {
                 ctx.fillText(char, left + x * charW, top + y * charH);
             }
             i++;
